@@ -3,8 +3,11 @@ import ifcopenshell.util.element
 import pandas as pd
 from ifcopenshell.geom import create_shape
 from ifcopenshell.util.shape import get_side_area, get_footprint_area, get_footprint_perimeter
+import numpy as np
+
 import math
 # from bonsai.bim.ifc import IfcStore
+
 
 
 
@@ -33,10 +36,31 @@ def get_parallelepiped_heigth(shape):
 
     return z_top_block - z_base
 
+def get_width(shape):
+    verts = np.array(shape.geometry.verts).reshape(-1,3)
+    
+    xmin, ymin, zmin= verts.min(axis=0)
+    xmax,ymax, zmax= verts.max(axis=0)
+
+    largura = ymax - ymin
+
+
+    return round(largura,2)
+def get_depth(shape):
+    verts = np.array(shape.geometry.verts).reshape(-1,3)
+    
+    xmin, ymin, zmin= verts.min(axis=0)
+    xmax,ymax, zmax= verts.max(axis=0)
+
+    espessura = xmax - xmin
+
+    return round(espessura,2)
+
+
 footings = model.by_type('IfcFooting')
 sapatas = []
 sapatas_name = []
-sapatas_altura, sapatas_largura, sapatas_volume, sapatas_id = [], [], [], []
+sapatas_altura, sapatas_largura, sapatas_volume,sapatas_espessura, sapatas_id = [], [], [], [], []
 sapatas_classe_concreto, sapatas_cobrimento = [], []
 sapatas_area_lateral, sapatas_perimetro, sapatas_laterais = [], [], []
 
@@ -49,7 +73,8 @@ for i, sapata in enumerate(sapatas):
     shape = create_shape(settings,sapata)  
     append_Element(sapatas_id, element, sapata, 'Qto_FootingBaseQuantities', 'id',True)
     sapatas_altura.append(round(float(get_parallelepiped_heigth(shape)),2))
-    append_Element(sapatas_largura, element, sapata, 'Qto_FootingBaseQuantities', 'Length',True)
+    sapatas_largura.append(get_width(shape))
+    sapatas_espessura.append(get_depth(shape))
     append_Element(sapatas_volume, element, sapata, 'Qto_FootingBaseQuantities', 'NetVolume',True)
     sapatas_volume[i] = round(sapatas_volume[i],2)
     append_Element(sapatas_classe_concreto, element, sapata, 'AltoQi_Eberick_Padrão', 'Classe de concreto',False)
@@ -58,18 +83,21 @@ for i, sapata in enumerate(sapatas):
     sapatas_area_lateral.append(round(get_side_area(shape.geometry),2))
     sapatas_perimetro.append(round(float(get_footprint_perimeter(shape.geometry)),2))
     sapatas_laterais.append(round(sapatas_perimetro[i]*sapatas_altura[i],2))
+    
+    get_width(shape)
 
 dic = {
     'ID':sapatas_id,
     'Nome':sapatas_name,
-    'Altura':sapatas_altura,
-    'Largura':sapatas_largura,
-    'Volume':sapatas_volume,
-    'Área Lateral':sapatas_area_lateral,
+    'Altura m':sapatas_altura,
+    'Largura m':sapatas_largura,
+    'Espessura m': sapatas_espessura,
+    'Volume m³':sapatas_volume,
+    'Área Lateral²':sapatas_area_lateral,
     'Cobrimento':sapatas_cobrimento,
     'Classe do concreto':sapatas_classe_concreto,
-    'Perimetro':sapatas_perimetro,
-    'Laterais':sapatas_laterais
+    'Perimetro²':sapatas_perimetro,
+    'Laterais p/ caixote m³':sapatas_laterais
 }
 
 dic = pd.DataFrame(dic)
