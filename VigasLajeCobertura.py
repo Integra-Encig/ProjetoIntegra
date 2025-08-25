@@ -30,7 +30,7 @@ vigas_name = []
 vigas_elevacao, vigas_secaobw, vigas_secaoh,vigas_taxaarmadura = [], [], [], []
 vigas_classe_concreto, vigas_cobrimento = [], []
 vigas_area_lateral, vigas_perimetro, vigas_laterais = [], [], []
-vigas_altura, vigas_largura, vigas_volume,vigas_espessura= [], [], [], []
+vigas_altura, vigas_largura, vigas_volume,vigas_comprimento= [], [], [], []
 
 for viga in beams:
     if element.get_container(viga).Name == 'Laje Cobertura':
@@ -44,7 +44,7 @@ for i, viga in enumerate(vigas):
 
     vigas_altura.append(product.get_height(shape))
     vigas_largura.append(product.get_length(shape))
-    vigas_espessura.append(product.get_width(shape))
+    vigas_comprimento.append(product.get_width(shape))
 
     vigas_volume.append(product.get_volume(shape))
     
@@ -64,7 +64,7 @@ for i, viga in enumerate(vigas):
 dic = {
     'Altura m': vigas_altura,
     'Largura m':vigas_largura,
-    'Comprimento m':vigas_espessura,
+    'Comprimento m':vigas_comprimento,
     'Volume m³':vigas_volume,
     'Área Lateral m²':vigas_area_lateral,
     'Perímetro m²':vigas_perimetro,
