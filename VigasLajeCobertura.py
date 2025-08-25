@@ -32,6 +32,7 @@ vigas_classe_concreto, vigas_cobrimento = [], []
 vigas_area_lateral, vigas_perimetro, vigas_laterais = [], [], []
 vigas_altura, vigas_largura, vigas_volume,vigas_comprimento= [], [], [], []
 
+
 for viga in beams:
     if element.get_container(viga).Name == 'Laje Cobertura':
         vigas.append(viga)

@@ -22,12 +22,12 @@ settings.set(settings.USE_WORLD_COORDS, True)
 
 
 
-
-
 footings = model.by_type('IfcFooting')
 sapatas = []
 sapatas_name = []
+
 sapatas_altura, sapatas_largura, sapatas_volume,sapatas_comprimento= [], [], [], []
+
 sapatas_classe_concreto, sapatas_cobrimento = [], []
 sapatas_area_lateral, sapatas_perimetro, sapatas_laterais = [], [], []
 base_concreto_magro = []
@@ -50,6 +50,7 @@ for i, sapata in enumerate(sapatas):
 
     product.append_Element(sapatas_classe_concreto, element, sapata, 'AltoQi_Eberick_Padrão', 'Classe de concreto',False)
     product.append_Element(sapatas_cobrimento, element, sapata, 'AltoQi_Eberick_Padrão', 'Cobrimento',False)
+
     sapatas_perimetro.append(round(float(get_footprint_perimeter(shape.geometry)),2))
     sapatas_laterais.append(round(sapatas_perimetro[i]*sapatas_altura[i],2))
     base_concreto_magro.append(round((sapatas_largura[i]*sapatas_comprimento[i])*0.05,2))
@@ -65,6 +66,7 @@ sapatas_classe_concreto.append('')
 sapatas_cobrimento.append('')
 
 
+
 dic = {
 
     'Nome':sapatas_name,
@@ -77,6 +79,7 @@ dic = {
     'Perimetro²':sapatas_perimetro,
     'Formas m²':sapatas_laterais,
     'Base Concreto Magro m³':base_concreto_magro
+
 }
 
 dic = pd.DataFrame(dic)

@@ -30,9 +30,11 @@ vigas_name = []
 vigas_elevacao, vigas_secaobw, vigas_secaoh,vigas_taxaarmadura = [], [], [], []
 vigas_classe_concreto, vigas_cobrimento = [], []
 vigas_area_lateral, vigas_perimetro, vigas_laterais = [], [], []
+
 vigas_altura, vigas_largura, vigas_volume,vigas_comprimento= [], [], [], []
 vigas_forma = []
 vigas_impermeabilizante = []
+
 
 for viga in beams:
     if element.get_container(viga).Name == 'Baldrame':
@@ -47,6 +49,7 @@ for i, viga in enumerate(vigas):
     vigas_altura.append(product.get_height(shape))
     vigas_largura.append(product.get_length(shape))
     vigas_comprimento.append(product.get_width(shape))
+
 
     vigas_volume.append(product.get_volume(shape))
     
@@ -63,15 +66,19 @@ for i, viga in enumerate(vigas):
     product.append_Element(vigas_classe_concreto, element, viga, 'AltoQi_Eberick_Padrão', 'Classe de concreto', False)
     product.append_Element(vigas_cobrimento, element, viga, 'AltoQi_Eberick_Padrão', 'Cobrimento', False)
 
+
     vigas_forma.append(round(((2*vigas_secaoh[i])+(vigas_secaobw[i]))*vigas_comprimento[i],2))
     vigas_impermeabilizante.append(round((2*(vigas_secaoh[i]+vigas_secaobw[i]))*vigas_comprimento[i],2))
+
 
 
     
 dic = {
     'Altura m': vigas_altura,
     'Largura m':vigas_largura,
+
     'Comprimento m':vigas_comprimento,
+
     'Volume m³':vigas_volume,
     'Área Lateral m²':vigas_area_lateral,
     'Perímetro m²':vigas_perimetro,
@@ -81,10 +88,11 @@ dic = {
     'Seção H':vigas_secaoh,
     'Taxa de armadura':vigas_taxaarmadura,
     'Classe de concreto':vigas_classe_concreto,
+
     'Cobrimento':vigas_cobrimento,
     'Área forma m²':vigas_forma,
     'Impermeabilizante m²':vigas_impermeabilizante
-}
+
 
 dic = pd.DataFrame(dic)
 dic.to_csv('./vigasbaldrame.csv', sep=';',encoding='latin1',index=False)
