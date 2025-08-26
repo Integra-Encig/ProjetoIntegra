@@ -6,11 +6,13 @@ from ifcopenshell.geom import create_shape
 from ifcopenshell.util.shape import get_side_area, get_footprint_area, get_footprint_perimeter
 import pandas as pd
 from SCR.Product import *
-
+from tqdm import tqdm
 
 class Vigas:
     def getAtributes(self, list):
         product = Product()
+        
+        pbar = tqdm(total = len(list), leave= False)
 
         element = ifcopenshell.util.element
 
@@ -44,6 +46,7 @@ class Vigas:
             product.append_Element(vigas_taxaarmadura, element, viga, 'AltoQi_Eberick_Elemento', 'Taxa de armadura', False)
             product.append_Element(vigas_classe_concreto, element, viga, 'AltoQi_Eberick_Padrão', 'Classe de concreto', False)
             product.append_Element(vigas_cobrimento, element, viga, 'AltoQi_Eberick_Padrão', 'Cobrimento', False)
+            pbar.update()
 
         vigas_name.append('TOTAL')
         vigas_altura.append(round(sum(vigas_altura,2)))

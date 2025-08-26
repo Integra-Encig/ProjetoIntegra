@@ -6,6 +6,7 @@ import pandas as pd
 from ifcopenshell.geom import create_shape
 from ifcopenshell.util.shape import get_footprint_area
 import numpy as np
+from tqdm import tqdm
 
 def executeEstacas():
     model = ifcopenshell.open('25-007-PRG-CR5-CONC-R00.IFC')
@@ -18,6 +19,7 @@ def executeEstacas():
 
 
     piles = model.by_type('IfcPile')
+    pbar = tqdm(total = len(piles),leave= False)
 
     colunas = []
     coluna_name = []
@@ -30,6 +32,7 @@ def executeEstacas():
         product.append_Element(classe_concreto, element, coluna, 'Pset_ConcreteElementGeneral','StrengthClass',False)
         product.append_Element(cobrimento, element, coluna, 'Pset_ConcreteElementGeneral','ConcreteCover',False)
         coluna_area_forma.append(round(product.get_height(shape),2))
+        pbar.update()
     coluna_name.append('TOTAL')
     classe_concreto.append('')
     cobrimento.append('')

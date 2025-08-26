@@ -6,6 +6,7 @@ import pandas as pd
 from ifcopenshell.geom import create_shape
 from ifcopenshell.util.shape import get_footprint_area
 import numpy as np
+from tqdm import tqdm
 
 
 def executeColunas():
@@ -20,6 +21,8 @@ def executeColunas():
 
     columns = model.by_type('IfcColumn')
 
+    pbar = tqdm(total=len(columns), leave= False)
+
     coluna_name = []
     coluna_area_forma = []
     classe_concreto, cobrimento = [], []
@@ -30,6 +33,7 @@ def executeColunas():
         product.append_Element(classe_concreto, element, coluna, 'AltoQi_Eberick_Padrão','Classe de concreto',False)
         product.append_Element(cobrimento, element, coluna, 'AltoQi_Eberick_Padrão','Cobrimento',False)
         coluna_area_forma.append(round((get_footprint_area(shape.geometry)) * product.get_height(shape),2))
+        pbar.update()
     coluna_name.append('TOTAL')
     classe_concreto.append('')
     cobrimento.append('')

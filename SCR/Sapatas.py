@@ -7,7 +7,7 @@ import numpy as np
 from SCR.Product import *
 import math
 # from bonsai.bim.ifc import IfcStore
-
+from tqdm import tqdm
 
 
 def executeSapatas():
@@ -25,6 +25,9 @@ def executeSapatas():
 
 
     footings = model.by_type('IfcFooting')
+    
+    pbar = tqdm(total = len(footings),leave= False)
+    
     sapatas = []
     sapatas_name = []
     sapatas_altura, sapatas_largura, sapatas_volume,sapatas_comprimento= [], [], [], []
@@ -53,6 +56,7 @@ def executeSapatas():
         sapatas_perimetro.append(round(float(get_footprint_perimeter(shape.geometry)),2))
         sapatas_laterais.append(round(sapatas_perimetro[i]*sapatas_altura[i],2))
         base_concreto_magro.append(round((sapatas_largura[i]*sapatas_comprimento[i])*0.05,2))
+        pbar.update()
 
     sapatas_altura.append(round(sum(sapatas_altura),2))
     sapatas_largura.append(round(sum(sapatas_largura),2))

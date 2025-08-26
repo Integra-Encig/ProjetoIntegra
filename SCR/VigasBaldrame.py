@@ -7,12 +7,14 @@ from ifcopenshell.util.shape import get_side_area, get_footprint_area, get_footp
 import pandas as pd
 from SCR.Product import *
 from SCR.Vigas import *
+from tqdm import tqdm
 
 def executeBaldrame():
     model = ifcopenshell.open('25-007-PRG-CR5-CONC-R00.IFC')
     vigas_class = Vigas()
     element = ifcopenshell.util.element
     beams = model.by_type('IfcBeam')
+    pbar = tqdm(total=len(beams))
     vigas = []
     vigas_forma = []
     vigas_impermeabilizante = []

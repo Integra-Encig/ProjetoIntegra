@@ -5,6 +5,7 @@ from ifcopenshell.geom import create_shape
 from ifcopenshell.util.shape import get_footprint_area
 import numpy as np 
 from SCR.Product import *
+from tqdm import tqdm
 
 def executeLajes():
     model = ifcopenshell.open('25-007-PRG-CR5-CONC-R00.IFC')
@@ -16,7 +17,9 @@ def executeLajes():
     settings.set(settings.USE_WORLD_COORDS, True)
 
     slabs = model.by_type('IfcSlab')
-
+    
+    pbar = tqdm(total = len(slabs),leave = False)
+    
     lajes = []
     lajes_name = []
     classe_concreto, cobrimento = [], []
@@ -35,6 +38,7 @@ def executeLajes():
         area.append(round(largura[i]*comprimento[i],2))
         volume.append(round(largura[i]*comprimento[i]*altura[i],2))
         perimetro.append(round(float(get_footprint_area(shape.geometry)),2))
+        pbar.update()
 
     lajes_name.append('TOTAL')
     classe_concreto.append('')
