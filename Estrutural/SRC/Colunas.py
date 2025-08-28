@@ -1,7 +1,7 @@
 
 import ifcopenshell
 import ifcopenshell.util.element
-from SCR.Product import *
+from SCR.Footings import *
 import pandas as pd
 from ifcopenshell.geom import create_shape
 from ifcopenshell.util.shape import get_footprint_area

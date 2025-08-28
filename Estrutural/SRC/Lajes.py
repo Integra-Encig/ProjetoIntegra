@@ -4,7 +4,7 @@ import pandas as pd
 from ifcopenshell.geom import create_shape
 from ifcopenshell.util.shape import get_footprint_area
 import numpy as np 
-from SCR.Product import *
+from SCR.Footings import *
 from tqdm import tqdm
 
 def executeLajes():
