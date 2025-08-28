@@ -1,27 +1,22 @@
-from SCR.Colunas import *
-from SCR.Estacas import *
-from SCR.Lajes import *
+
 from SCR.Sapatas import *
-from SCR.VigasBaldrame import *
-from SCR.VigasLajeCobertura import *
-from SCR.VigasPlatibanda import *
-from tqdm import tqdm
 
-pbar = tqdm((range(8)))
+import ifcopenshell.util.element
 
-executeColunas()
-pbar.update()
-executeCobertura()
-pbar.update()
-executeEstacas()
-pbar.update()
-executeLajes()
-pbar.update()
-executeSapatas()
-pbar.update()
-executeBaldrame()
-pbar.update()
-executeCobertura()
-pbar.update()
-executePlatibanda()
-pbar.update()
+
+model = ifcopenshell.open('IFC_CONC_RESTAURANTE.IFC')
+
+footings = model.by_type('IfcFooting')
+element = ifcopenshell.util.element
+df = pd.DataFrame()
+
+for sapata in footings:
+        if element.get_predefined_type(sapata) == 'PAD_FOOTING':
+            Sapatas(sapata)
+            sapatadf = pd.concat([df, Sapatas(sapata).get_psets(sapata)], ignore_index=True)
+            df = sapatadf
+
+sapatadf = pd.DataFrame(sapatadf)
+
+sapatadf.to_csv('./sapatateste.csv', sep=';', encoding='latin1',index=False)
+    
